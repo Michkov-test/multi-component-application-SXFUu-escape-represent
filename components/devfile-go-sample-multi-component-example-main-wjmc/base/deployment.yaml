@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: devfile-go-sample-multi-component-example-main-wjmc
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: devfile-go-sample-multi-component-example-main-wjmc
+    app.kubernetes.io/part-of: multi-component-application
+  name: devfile-go-sample-multi-component-example-main-wjmc
+  namespace: e2e-demo-qxhh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: devfile-go-sample-multi-component-example-main-wjmc
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: devfile-go-sample-multi-component-example-main-wjmc
+    spec:
+      containers:
+      - image: quay.io/mkovarik/test-images:5f7928b55f3344d195104b45f0929497
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        name: container-image
+        ports:
+        - containerPort: 8081
+        readinessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          tcpSocket:
+            port: 8081
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi
+status: {}
